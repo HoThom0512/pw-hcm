@@ -1,12 +1,13 @@
 name: Playwright Tests
 
-on: 
+on:
   push:
     branches:
-      - '**'
+      - main  # Kích hoạt khi có push vào nhánh 'main'
   pull_request:
     branches:
-      - '**'
+      - main  # Kích hoạt khi có pull request vào nhánh 'main'
+  workflow_dispatch:  # Kích hoạt thủ công (manual trigger)
 
 jobs:
   test:
@@ -16,7 +17,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Setup Node.js
+    - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 'lts'
