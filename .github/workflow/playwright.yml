@@ -1,6 +1,6 @@
 name: Playwright Tests
 
-on: Run Tests
+on: 
   push:
     branches:
       - '**'
@@ -19,7 +19,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 'node'
+        node-version: 'lts'
 
     - name: Install dependencies
       run: npm install
