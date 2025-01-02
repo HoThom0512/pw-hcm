@@ -38,8 +38,11 @@ export default defineConfig({
     
     {
       
+      name: 'local',
       use: {
-        baseURL: 'http://localhost:3000',
+        baseURL: 'http://localhost:3000',  // URL của môi trường local
+        browserName: 'chromium',
+        headless: true,
         
       },
     },
