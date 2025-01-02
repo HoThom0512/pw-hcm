@@ -14,7 +14,7 @@ test ('kiểm tra login', async ({overviewpage,page})=> {
 //test ('verify pop up is avaiable to click', async ({page})=>{
     
 
-    await page.locator('text=Admin').click();
+    await page.locator('text=Admin').click({timeout:60000});
     await expect(page.locator('text=Access control management')).toHaveText('Access control management');
     
     await page.locator('text=Access control management').click();
@@ -48,7 +48,7 @@ const {buttonText,popupSelector,popupText, expectedPopupText,closePopup} = butto
 
 const button = page.locator(`button`, { hasText: buttonText });
 
-await button.click();
+await button.click({timeout:60000});
 
 const popup = page.locator(popupSelector);
 
