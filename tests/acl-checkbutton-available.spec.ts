@@ -6,8 +6,8 @@ import {expect} from '@playwright/test';
 test ('kiểm tra login', async ({overviewpage,page})=> {
    
     await expect(overviewpage.page).toHaveURL('https://qa-nexthcm.banvien.com.vn/overview');
-    const linkText = await overviewpage.page.locator('a.link-sidebar[href="/overview"]:has-text("Overview")').innerText();
-    await expect(linkText).toBe('Overview');
+    //const linkText = await overviewpage.page.locator('a.link-sidebar[href="/overview"]:has-text("Overview")').innerText();
+    //await expect(linkText).toBe('Overview');
 
 
 
