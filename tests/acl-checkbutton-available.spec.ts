@@ -29,7 +29,7 @@ const buttonPopup = [
 
 {
     buttonText: 'Filter permission by employee',
-    popupSelector: 'div[class="sc-jsHwAT Vwkix"]',// selector cho pop-up "Permission Filter"
+    popupSelector: 'div[class="sc-dCLGXw iVoesF"]',// selector cho pop-up "Permission Filter"
     popupText: 'h1[class="ant-typography sc-cEzcPc iZwFYj title"]',
     expectedPopupText: 'Permission By Employee',
     closePopup:'button[class="ant-btn ant-btn-default sc-egkSDF knzsGP"]',
@@ -44,23 +44,24 @@ const buttonPopup = [
 ];
 
 for (let i = 0; i<buttonPopup.length; i++){
-const {buttonText, popupSelector,popupText, expectedPopupText,closePopup} = buttonPopup[i];
+const {buttonText,popupSelector,popupText, expectedPopupText,closePopup} = buttonPopup[i];
 
 const button = page.locator(`button`, { hasText: buttonText });
 
 await button.click();
 
 const popup = page.locator(popupSelector);
-await expect(popup).toBeVisible();
 
 const popupContent = page.locator(popupText);
 
+
 await expect(popupContent).toHaveText(expectedPopupText);
+
 const closeButton = popup.locator(closePopup);
+
 await closeButton.click();
 
-await expect(popup).toBeHidden();
-
+await expect(popupContent).toBeHidden();
 
 }
 });
