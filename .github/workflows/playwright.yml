@@ -3,14 +3,14 @@ name: Playwright Tests
 on:
   push:
     branches:
-      - main  # Kích hoạt khi có push vào nhánh 'main'
+      - main
   pull_request:
     branches:
-      - main  # Kích hoạt khi có pull request vào nhánh 'main'
-  workflow_dispatch:  # Kích hoạt thủ công (manual trigger)
+      - main
+  workflow_dispatch:
 
 jobs:
-  test:
+  run-local-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,5 +28,5 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    - name: Run Playwright Tests
-      run: npx playwright test
+    - name: Run Playwright Tests (Local)
+      run: npx playwright test --project=local  # Chạy với project 'local' đã cấu hình ở Playwright

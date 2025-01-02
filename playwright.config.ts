@@ -34,20 +34,38 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+
+    
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      
+      use: {
+        baseURL: 'http://localhost:3000',
+        
+      },
+    },
+    /*{
+      name: 'QA',
+      use: {
+        baseURL: 'https://qa-nexthcm.banvien.com.vn/',
+        browserName: 'webkit',
+        headless: true,
+      },
     },
 
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+      name: 'UAT',
+      use: {
+        baseURL: 'https://uat-nexthcm.banvien.com.vn/',
+        browserName: 'chromium',
+        headless: true,
+      },
+    },*/
+  
 
-    {
+    /*{
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-    },
+    },*/
 
     /* Test against mobile viewports. */
     // {
