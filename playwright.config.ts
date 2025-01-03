@@ -34,9 +34,12 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-
-    
     {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    
+    /*{
       
       name: 'local',
       use: {
@@ -45,7 +48,7 @@ export default defineConfig({
         headless: true,
         
       },
-    },
+    },*/
     /*{
       name: 'QA',
       use: {
@@ -53,9 +56,9 @@ export default defineConfig({
         browserName: 'webkit',
         headless: true,
       },
-    },
+    },*/
 
-    {
+    /*{
       name: 'UAT',
       use: {
         baseURL: 'https://uat-nexthcm.banvien.com.vn/',
