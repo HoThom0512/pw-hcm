@@ -7,19 +7,21 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
-  test:
+  run-local-tests:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Setup Node.js
+    - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 'lts'
+
+        node-version: '22'
 
     - name: Install dependencies
       run: npm install
@@ -27,5 +29,5 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    - name: Run Playwright Tests
-      run: npx playwright test
+    - name: Run Playwright Tests (Local)
+      run: npx playwright test --project=local  # Chạy với project 'local' đã cấu hình ở Playwright
