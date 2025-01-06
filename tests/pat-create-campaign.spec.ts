@@ -44,4 +44,9 @@ test('create campaign', async ({ overviewpage, page }) => {
 
   // Finalize the action by clicking the save button
   await page.locator('button[class="ant-btn ant-btn-default sc-egkSDF knBkRw"]').click();
+
+  //Step 7 slect range date in Milestone Settings tab 
+ await page.locator('input[name="self_assessment_start_date"]').click();
+ await page.locator('input[name="self_assessment_end_date"]').fill('01/01/2025');
+
 });
