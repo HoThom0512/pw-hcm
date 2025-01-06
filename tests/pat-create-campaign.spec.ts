@@ -44,9 +44,39 @@ test('create campaign', async ({ overviewpage, page }) => {
 
   // Finalize the action by clicking the save button
   await page.locator('button[class="ant-btn ant-btn-default sc-egkSDF knBkRw"]').click();
+ //Step 7 select date for each stage 
+ //7.1 self Assesment, viết các hàm sử dụng chung cho all stage 
+ //hàm async
+ //const openDatePiker = await page.locator('input[placeholder="Select date"]');
+ //await openDatePiker.click();
 
-  //Step 7 slect range date in Milestone Settings tab 
- await page.locator('input[name="self_assessment_start_date"]').click();
- await page.locator('input[name="self_assessment_end_date"]').fill('01/01/2025');
+// hàm chọn year
+const selectYear = async (page,year) => {
+  await page.locator('.ant-picker-year-btn').click();
+  await page.locator(`button:has-text("${year}")`).click();
+};
+
+ 
+//hàm chọn month
+const selectMonth = async(page, month)=> {
+await page.locator('.ant-picker-year-btn').click();
+await page.locator(`button:has-text("${month}")`);
+};
+
+//hàm select date
+const selectDate = async (page, date) => {
+  await page.locator(`.ant-picker-cell[title="${date}"] .ant-picker-cell-inner`).click();
+};
+const selectDatePicker = async(page, selectYear,selectMonth,selectDate)=>{
+  await selectYear(page,selectYear);
+  await selectMonth(page,selectMonth);
+  await selectDate(page,selectDate);
+
+};
+//step 8 fill date time to stage selfAssesment
+await page.locator('input[name="self_assessment_start_date"]').click();
+await selectDatePicker(page,'20205','Jan','2025-01-06');
+await page.locator('input[name="self_assessment_end_date"]').click();
+await selectDatePicker(page,'20205','Jan','2025-01-07');
 
 });

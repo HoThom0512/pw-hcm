@@ -1,3 +1,4 @@
+
 import {Page} from '@playwright/test';
 
 
@@ -21,3 +22,4 @@ await this.page.locator('button[type="submit"]').click();
  
 
 };
+
