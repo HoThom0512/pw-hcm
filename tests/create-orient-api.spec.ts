@@ -1,4 +1,4 @@
-/*import { expect } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { test } from '../src/fixture/index.fixture';
 
 
@@ -19,11 +19,11 @@ import { test } from '../src/fixture/index.fixture';
 
   });
 */
- /*test ('go to page create Orientation', async({request}) =>{
-  const nameJobLevel = "HT13";
+ test ('go to page create Orientation', async({request}) =>{
+  const nameJobLevel = "NN26";
   const baseURL = "https://qa-nexthcm-api.banvien.com.vn/gatewayapp/users/levels";
     
-  const bearToken = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJqeTlxNWxUMjU1VVktc3o1M3JIRFFIOUF5dlB2cGV6Z25XQXJfNGNCVHhVIn0.eyJleHAiOjE3Mzc0NDU0NTQsImlhdCI6MTczNzM1OTA1NCwianRpIjoiODZjOGE3MWYtYjU5NS00ZDQ2LWJiZGUtNDlmNWE5NzZhNTU3IiwiaXNzIjoiaHR0cDovL25leHRoY20ta2V5Y2xvYWs6ODA4MC9yZWFsbXMvaGNtLXFhIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjliZTBjNDYzLTFmMTctNDY3OC04MWI0LWZjYmYzYTVmNDM5YyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImhjbS1hY2NvdW50Iiwic2Vzc2lvbl9zdGF0ZSI6ImNkNGUzODQ2LTQ2MDItNDVhNC1hZWNmLTYwNGUzYWU3MWYzNCIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbmV4dGhjbS1rZXljbG9hazo4MDgwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsInNpZCI6ImNkNGUzODQ2LTQ2MDItNDVhNC1hZWNmLTYwNGUzYWU3MWYzNCIsIm9yZ1R5cGUiOiJMMyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IlRoYW5oIFNvbiBOZ3V5ZW4iLCJ0ZW5hbnRJZCI6IjJhNmIzYzQ2LWExNWUtNDRjZC1iMThlLTFhZTlmZWUzZmNjYSIsInByZWZlcnJlZF91c2VybmFtZSI6InNvbi5uZ3V5ZW4iLCJnaXZlbl9uYW1lIjoiVGhhbmggU29uIiwidXNlcklkIjoiOWJlMGM0NjMtMWYxNy00Njc4LTgxYjQtZmNiZjNhNWY0MzljIiwiZmFtaWx5X25hbWUiOiJOZ3V5ZW4iLCJvcmdJZCI6ImNjOTIxOGY4LTliYzctNDExYy1iM2RiLWM4NWQyZTUyNTBkYiIsImVtYWlsIjoic29uLm5ndXllbkBiYW52aWVuLmNvbS52biJ9.bZqKP5aax-UctQwzmwi_a2sPjuu8YIKoyQHFR3KS3KhDDzQKO51jhSDvUxQVffturFkVaPmWh0VLealOWGe8SGMcIAca9_v340hiCl6OuXg6afjNPJ7UtbJfhybWKeD8O3nsUlgk95Cxau68c9xWObkND63cue51F5rtjDvN79H7MRGe5rdO7JaGzqMUG9Vh0b8UJSvK5yHaqAGk0_cUFE5dPZpRSMnZO9eRX2aGAKxDFCAy_jzPeiEq7NxeDCUkmWW0lVsYAxr28YejfGzwWQ8h9-E1y_xFYejNKCYXU3orxH-skoH2-oi_-94D5rEtIe2kpHo82aUEdmbx8ODSWA'
+  const bearToken = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJqeTlxNWxUMjU1VVktc3o1M3JIRFFIOUF5dlB2cGV6Z25XQXJfNGNCVHhVIn0.eyJleHAiOjE3Mzc2MDIxMjQsImlhdCI6MTczNzUxNTcyNCwianRpIjoiNzVjNjIzOWUtMTgzNC00MTEwLWEwMWQtZjYxNDc2MjJlYjdkIiwiaXNzIjoiaHR0cDovL25leHRoY20ta2V5Y2xvYWs6ODA4MC9yZWFsbXMvaGNtLXFhIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjliZTBjNDYzLTFmMTctNDY3OC04MWI0LWZjYmYzYTVmNDM5YyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImhjbS1hY2NvdW50Iiwic2Vzc2lvbl9zdGF0ZSI6ImQ5YjdhN2EwLWRkMmEtNGVkMy1hOWIxLTA2ZWFlNWU4MzZhNCIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbmV4dGhjbS1rZXljbG9hazo4MDgwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsInNpZCI6ImQ5YjdhN2EwLWRkMmEtNGVkMy1hOWIxLTA2ZWFlNWU4MzZhNCIsIm9yZ1R5cGUiOiJMMyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IlRoYW5oIFNvbiBOZ3V5ZW4iLCJ0ZW5hbnRJZCI6IjJhNmIzYzQ2LWExNWUtNDRjZC1iMThlLTFhZTlmZWUzZmNjYSIsInByZWZlcnJlZF91c2VybmFtZSI6InNvbi5uZ3V5ZW4iLCJnaXZlbl9uYW1lIjoiVGhhbmggU29uIiwidXNlcklkIjoiOWJlMGM0NjMtMWYxNy00Njc4LTgxYjQtZmNiZjNhNWY0MzljIiwiZmFtaWx5X25hbWUiOiJOZ3V5ZW4iLCJvcmdJZCI6ImNjOTIxOGY4LTliYzctNDExYy1iM2RiLWM4NWQyZTUyNTBkYiIsImVtYWlsIjoic29uLm5ndXllbkBiYW52aWVuLmNvbS52biJ9.eLtUeA7pD-vPVedz-gk9-8cOeImq3J2-Tb-hHT9-jJs-GC29HXYI0MUnAdW8UTMZZ8cp_Pu30sn6zjh9o4nhh_yvlXTxJ5Vk4ONqQTdB8mPU5GsBeEzOGJk4PXhS1NXM0Z-Y1xfmVV_tcJMeXjRMZ9IDcLaO5SE4QFPGj4w11zGldL23y1MGEcmu7SxzuEbNHMmOa0KGhTYTuur7Inb6pvWugWudDHlXULbqMKIhIw_NdaJqroc70WzM7px4LG3D5RVlALykG4skmlg9sokmjvZVUBQS049b1iKJjFPlckAeJ5wFXAp7CJchVHla3yFnjuft2yViV9qyelT86tlfLQ'
 //Post method 
     const postAPIJobLevel = await request.post(`${baseURL}`,{
 
@@ -44,13 +44,13 @@ import { test } from '../src/fixture/index.fixture';
       return;
 
     }*/
-    /*const bodyJsonPost = await postAPIJobLevel.json();
+    const bodyJsonPost = await postAPIJobLevel.json();
     console.log(bodyJsonPost);
 
   await expect(postAPIJobLevel.status()).toEqual(200);
-  
+ });
 // GET method 
- const getJobLevel = await request.get(`${baseURL}?sort=&page=0&size=10`,{
+ /*const getJobLevel = await request.get(`${baseURL}?sort=&page=0&size=10`,{
 
  headers: {
   'Authorization': bearToken
@@ -69,4 +69,5 @@ const jobLevelID = createJobLevel.id;
 
 console.log('get job level form post api',createJobLevel);
 
-});*/
+});
+*/
