@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: CICD HCM
 
 on:
   push:
@@ -7,27 +7,38 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  run-local-tests:
+  Ho_Thom:
+    timeout-minutes: 60
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
 
-        node-version: '22'
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install Playwright and browsers
+        run: npx playwright install --with-deps
 
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
 
-    - name: Run Playwright Tests (Local)
-      run: npx playwright test --project=local  # Chạy với project 'local' đã cấu hình ở Playwright
+      - name: Upload HTML Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-html-report
+          path: test-results/html-report  # Đường dẫn đến thư mục chứa báo cáo HTML
+
+      - name: Upload JSON Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-json-report
+          path: test-results/json-report  # Đường dẫn đến thư mục chứa báo cáo JSON

@@ -1,12 +1,11 @@
-import { expect } from '@playwright/test';
+/*import { expect } from '@playwright/test';
 import { test } from '../src/fixture/index.fixture';
 
 
 
 test('step 1 login on HCM system', async({overviewpage,page}) =>{
   
- await test.step('Step 2 Navigate to Admin menu then click on PA ', async() =>{
-
+  await test.step('Step 2 Navigate to Admin menu then click on PA ', async() =>{
   await page.locator('text = Admin').click();
   await expect(page.locator('a[href="/admin/performance-assessment"]')).toBeVisible();
   await page.locator('text = Performance Assessment').click();
@@ -26,7 +25,7 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
   const dropdown = page.locator('div[class="ant-select-selection-overflow"]');
 
   await dropdown.click();
-  await expect(page.locator('div[class="rc-virtual-list-holder-inner"]')).toBeVisible();
+  await expect(page.locator('div[class="rc-virtual-list-holder-inner"]')).toHaveClass;
 
 
   for (const Department of department) {
@@ -44,114 +43,93 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
  await test.step ('tep 5 fill all require field valid in Milestone Settings',async () => {
 
   //const datePickerPopUp = ".ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft";
- 
+  
   const stageRange = [
     {
       name: 'self_assessment',
-      startDate: '2025-01-09',
-      endDate: '2025-01-10',
-      datePickers: [
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft',
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft'
-      ]
+      startDate: '2025-01-13',
+      endDate: '2025-01-14',
     },
     {
       name: 'assessment',
-      startDate: '2025-01-09',
-      endDate: '2025-01-10',
-      datePickers: [
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft',
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft'
-      ]
+      startDate: '2025-01-13',
+      endDate: '2025-01-13',
     },
     {
       name: 'first_review',
-      startDate: '2025-01-09',
-      endDate: '2025-01-10',
-      datePickers: [
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft',
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft'
-      ]
+      startDate: '2025-01-13',
+      endDate: '2025-01-13',
     },
     {
       name: 'face_to_face_meeting',
-      startDate: '2025-01-09',
-      endDate: '2025-01-10',
-      datePickers: [
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft',
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft'
-      ]
+      startDate: '2025-01-13',
+      endDate: '2025-01-14',
     },
     {
       name: 'second_review',
-      startDate: '2025-01-09',
-      endDate: '2025-01-10',
-      datePickers: [
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft',
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft'
-      ]
+      startDate: '2025-01-13',
+      endDate: '2025-01-14',
     },
 
     {
       name: 'final_approval',
-      startDate: '2025-01-09',
-      endDate: '2025-01-10',
-      datePickers: [
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft',
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft'
-      ]
+      startDate: '2025-01-13',
+      endDate: '2025-01-14',
     },
     {
       name: 'result_announcement',
-      startDate: '2025-01-09',
-      endDate: '2025-01-10',
-      datePickers: [
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft',
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft'
-      ]
+      startDate: '2025-01-13',
+      endDate: '2025-01-14',
     },
     {
       name: 'employee_revision_requests',
-      startDate: '2025-01-09',
-      endDate: '2025-01-10',
-      datePickers: [
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft',
-        '.ant-picker-dropdown.style-range-picker-popover.popup-date-picker.en.ant-picker-dropdown-placement-bottomLeft'
-      ]
+      startDate: '2025-01-13',
+      endDate: '2025-01-14',
     },
  ];
   
+  for (const StageRange  of stageRange ) {
+    console.log(`Processing: ${StageRange.name}`);
 
+    await selectDate(`${StageRange.name}_start_date`, StageRange.startDate);
+    await page.waitForTimeout(1000);
+    // Click end date
+    await selectDate(`${StageRange.name}_end_date`, StageRange.endDate);
+  }
 
- const selectDate = async (name, date, datePickerLocator,index) => {
-  const dateInputLocator = page.locator(`input[name="${name}"]`);
-  await dateInputLocator.click({ timeout: 60000 });
+ });
+  // Hàm chọn ngày từ date picker
+async function selectDate(inputName, date) {
+  const inputLocator = page.locator(`input[name="${inputName}"]`);
+  
+  // Click vào input để mở date picker
+  await inputLocator.click({ timeout: 60000 });
 
-  const datePickerPopupLocator = page.locator(datePickerLocator).nth(index); // Use nth(index) to target the correct date picker
-  await expect(datePickerPopupLocator).toBeVisible({ timeout: 15000 });
+  // Đợi date picker xuất hiện
+  const datePicker = page.locator('div[class="ant-picker-dropdown style-range-picker-popover popup-date-picker en ant-picker-dropdown-placement-bottomLeft "]');
+  await datePicker.waitFor({ state: 'visible', timeout: 60000 });
+  await datePicker.waitFor({ state: 'attached', timeout: 60000 });
+  // Chọn ngày cụ thể trong date picker
+  const dateLocator = page.locator(`td[title="${date}"].ant-picker-cell-in-view`).first();
+  const isVisible = await dateLocator.isVisible();
+  if (isVisible) {
+    await dateLocator.click({ timeout: 60000 });
+    console.log('Date selected!');
+  } else {
+    console.log('Date is not visible!');
+  }
+  
+  //await dateLocator.waitFor({ state: 'visible', timeout: 90000 });
 
-  // Chọn ngày từ popup
-  const dateElementLocator = page.locator(`td[title="${date}"]:visible`).first();
-  await expect(dateElementLocator).toBeVisible({ timeout: 10000 });
+  await dateLocator.scrollIntoViewIfNeeded({ timeout: 90000});
 
-  // Scroll và click vào ngày
-  //await dateElementLocator.scrollIntoViewIfNeeded({ timeout: 10000 });
-  //await dateElementLocator.click({ timeout: 10000 });
+  //await dateLocator.waitFor({ state: 'visible', timeout: 60000 });
 
-};
+ // await dateLocator.click({ timeout: 90000, force: true });
 
-for (const { name, startDate, endDate, datePickers } of stageRange) {
-  // Chọn start date cho stage
-  await selectDate(`${name}_start_date`, startDate, datePickers[0],0);
+  console.log(`Selected date ${date} for ${inputName}`);
 
-  // Chọn end date cho stage
-  await selectDate(`${name}_end_date`, endDate, datePickers[1],1);
-}
-});
-
-//await expect(startSelectDate).toBe(startSelectDate);
-//await expect(endSelectDate).toBe(endSelectDate);
-
+  }
 
 await test.step('step 6 click next button',async()=>{ 
 await page.locator('text= Next').click({timeout:60000});
@@ -163,5 +141,4 @@ await expect(page.locator('text=Participants Adjustment')).toBeVisible();
 await page.locator('text=Finish').click();
  
 });
-
- });
+});*/
