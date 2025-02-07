@@ -14,7 +14,7 @@ await loginpage.fillInformation("thom.ho","BVC@12345678");
 await loginpage.Login();
 
 
-await expect(page.locator('a[href="/overview"]:nth-of-type(1)')).toBeVisible();
+await expect(page.locator('text=Overview')).toBeVisible();
 
 const useroverviewpage = new OverviewPage(page);
 await use(useroverviewpage);
