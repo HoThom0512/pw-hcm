@@ -1,33 +1,45 @@
-name: Playwright Tests
+name: Thom HO
 
 on:
   push:
     branches:
-      - main
+      - main # Kích hoạt khi có push lên nhánh main
   pull_request:
     branches:
-      - main
-  workflow_dispatch:
+      - main # Kiểm tra PR vào nhánh main
 
 jobs:
-  run-local-tests:
+  test:
+    timeout-minutes: 60
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # Bước 1: Checkout mã nguồn
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
+      # Bước 2: Cài đặt Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/* # Chọn phiên bản Node.js
 
-        node-version: '22'
+      # Bước 3: Cài đặt các phụ thuộc của dự án (npm install)
+      - name: Install dependencies
+        run: npm ci
+         
 
-    - name: Install dependencies
-      run: npm install
+      # Bước 4: Cài đặt Playwright và các browser dependencies
+      - name: Install Playwright
+        run: npx playwright install --with-deps
 
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      # Bước 5: Chạy các bài kiểm tra Playwright
+      - name: Run Playwright tests
+        run: npx playwright test
 
-    - name: Run Playwright Tests (Local)
-      run: npx playwright test --project=local  # Chạy với project 'local' đã cấu hình ở Playwright
+      # Bước 6: Upload Playwright report as artifact
+      - name: Upload Playwright report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/     # Đảm bảo thư mục báo cáo tồn tại

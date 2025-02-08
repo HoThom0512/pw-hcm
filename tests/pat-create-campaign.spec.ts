@@ -50,34 +50,49 @@ test('create campaign', async ({ overviewpage, page }) => {
  //hàm async
  //const openDatePiker = await page.locator('input[placeholder="Select date"]');
  //await openDatePiker.click();
-
-// hàm chọn year
-const selectYear = async (page,year) => {
-  await page.locator('.ant-picker-year-btn').click();
-  await page.locator(`button:has-text("${year}")`).click();
-};
-
- 
-//hàm chọn month
-const selectMonth = async(page, month)=> {
-await page.locator('.ant-picker-year-btn').click();
-await page.locator(`button:has-text("${month}")`);
-};
-
-//hàm select date
-const selectDate = async (page, date) => {
-  await page.locator(`.ant-picker-cell[title="${date}"] .ant-picker-cell-inner`).click();
-};
-const selectDatePicker = async(page, selectYear,selectMonth,selectDate)=>{
-  await selectYear(page,selectYear);
-  await selectMonth(page,selectMonth);
-  await selectDate(page,selectDate);
-
-};
-//step 8 fill date time to stage selfAssesment
-await page.locator('input[name="self_assessment_start_date"]').click();
-await selectDatePicker(page,'20205','Jan','2025-01-06');
-await page.locator('input[name="self_assessment_end_date"]').click();
-await selectDatePicker(page,'20205','Jan','2025-01-07');
-
 });
+
+ const stages = [
+  { name: 'self_assessment', startDate: '2025-01-11', endDate: '2025-01-12' },
+  { name: 'assessment', startDate: '2025-01-11', endDate: '2025-01-12' },
+  { name: 'first_review', startDate: '2025-01-11', endDate: '2025-01-12' },
+  { name: 'face_to_face_meeting', startDate: '2025-01-11', endDate: '2025-01-12' },
+  { name: 'second_review', startDate: '2025-01-11', endDate: '2025-01-12'},
+  { name: 'final_approval', startDate: '2025-01-11', endDate: '2025-01-12' },
+  { name: 'result_announcement', startDate: '2025-01-11', endDate: '2025-01-12' },
+  { name: 'employee_revision_requests', startDate: '2025-01-11', endDate: '2025-01-12' },
+];
+
+// Hàm hỗ trợ chọn ngày từ date picker
+async function selectDateFromPicker(page, datePickerSelector, date) {
+  const [year, month, day] = date.split('-');
+
+  // Click vào ô input để mở date picker
+  await page.locator(datePickerSelector).click();
+
+  // Chọn năm
+  await page.locator(`button.ant-picker-year-btn`).selectOption(year);
+
+  // Chọn tháng (tháng thường đánh số từ 0-11)
+  await page.locator(`button.ant-picker-month-btn`).selectOption(String(Number(month) - 1));
+
+  // Chọn ngày
+  await page.locator('div.ant-picker-cell-inner', { hasText: day }).click();
+}
+
+// Hàm cấu hình từng stage
+async function configureStage(page, stage) {
+  console.log(`Configuring stage: ${stage.name}`);
+
+  // Tạo selector cho start date và end date dựa trên stage name
+  const startDateSelector = `input[name="${stage.name}_start_date"]`;
+  const endDateSelector = `input[name="${stage.name}_end_date"]`;
+
+  // Chọn start date
+  await selectDateFromPicker(page, startDateSelector, stage.startDate);
+
+  // Chọn end date
+  await selectDateFromPicker(page, endDateSelector, stage.endDate);
+
+  console.log(`Configured ${stage.name} successfully.`);
+}

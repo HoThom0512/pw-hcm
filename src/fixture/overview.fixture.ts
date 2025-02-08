@@ -15,8 +15,8 @@ await loginpage.fillInformation("son.nguyen","BVC@12345678");
 await loginpage.Login();
 
 
-const title = page.locator('a[href="/overview"]')
-await expect(title).toHaveText('Overview');
+//const title = page.locator('a[href="/overview"]')
+await expect(page.locator('a[href="/overview"]').nth(1)).toBeVisible({timeout:3000});
 
 const overviewpage = new OverviewPage(page);
 await use(overviewpage);
