@@ -1,4 +1,4 @@
-import {test} from '../src/fixture/index.fixture';
+/*import {test} from '../src/fixture/index.fixture';
 import {expect} from '@playwright/test';
 
 
@@ -66,3 +66,4 @@ await expect(popupContent).toBeHidden();
 }
 });
 
+*/

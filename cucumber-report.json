@@ -1,0 +1,64 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "login;user-logs-in-successfully",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "User logs in successfully",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "I open the login page",
+            "match": {
+              "location": "features\\step_definitions\\loginSteps.ts:8"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 5064989700,
+              "error_message": "Error: function timed out, ensure the promise resolves within 5000 milliseconds\n    at Timeout.<anonymous> (C:\\Users\\thom.ho\\OneDrive - Ban Vien Corporation\\Documents\\Udemy\\pw-hcm\\node_modules\\@cucumber\\cucumber\\src\\time.ts:52:14)\n    at listOnTimeout (node:internal/timers:594:17)\n    at processTimers (node:internal/timers:529:7)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 5,
+            "name": "I submit valid credentials",
+            "match": {
+              "location": "features\\step_definitions\\loginSteps.ts:14"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 6,
+            "name": "I should see the homepage",
+            "match": {
+              "location": "features\\step_definitions\\loginSteps.ts:28"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "login",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Login",
+    "tags": [],
+    "uri": "features\\login.features\\gherkin.login.feature"
+  }
+]
