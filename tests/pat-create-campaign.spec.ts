@@ -97,11 +97,30 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
     await selectDate(`${StageRange.name}_end_date`, StageRange.endDate);
   }
 
+
+
+// Hàm cấu hình từng stage
+async function configureStage(page, stage) {
+  console.log(`Configuring stage: ${stage.name}`);
+
+  // Tạo selector cho start date và end date dựa trên stage name
+  const startDateSelector = `input[name="${stage.name}_start_date"]`;
+  const endDateSelector = `input[name="${stage.name}_end_date"]`;
+
+  // Chọn start date
+  await selectDateFromPicker(page, startDateSelector, stage.startDate);
+
+  // Chọn end date
+  await selectDateFromPicker(page, endDateSelector, stage.endDate);
+
+  console.log(`Configured ${stage.name} successfully.`);
+}
+=======
  });
   // Hàm chọn ngày từ date picker
 async function selectDate(inputName, date) {
   const inputLocator = page.locator(`input[name="${inputName}"]`);
-  
+
   // Click vào input để mở date picker
   await inputLocator.click({ timeout: 60000 });
 
@@ -142,3 +161,4 @@ await page.locator('text=Finish').click();
  
 });
 });*/
+

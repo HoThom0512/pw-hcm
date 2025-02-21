@@ -13,7 +13,6 @@ const loginpage = new LoginPage(page);
 await loginpage.fillInformation("son.nguyen","BVC@12345678");
 await loginpage.Login();
 
-
 await expect(page.locator('//a[text()="Overview"]')).toBeVisible();
 
 const overviewpage = new OverviewPage(page);
