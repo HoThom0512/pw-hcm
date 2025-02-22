@@ -44,13 +44,25 @@ async function selectValueDropList(page, dropdownId, optionIndex, locatorSubScor
 
  const [val1,val2,val3,val4] = idDropList.map(score=> parseFloat(score.expectValue));
  
- const sumVal = 
- parseFloat((val1 * 0.5).toFixed(2)) + 
- parseFloat(((val2 + val3) * 0.5).toFixed(2)) + 
- parseFloat((val4 * 0.1).toFixed(2));
- console.log(`sum:${sumVal}`);
+ console.log(`val1: ${val1}, val2: ${val2}, val3: ${val3}, val4: ${val4}`);
 
- let totalScore = 0;
+ const sumVal = 
+    (val1) + 
+    ((val2 + val3) * 0.5) + 
+    (val4 * 0.1);
+
+// Làm tròn bằng cách cộng Number.EPSILON trực tiếp
+const finalSum = Math.round((sumVal + Number.EPSILON) * 100) / 100;
+
+console.log(`Total: ${finalSum}`);
+console.log(`val1: ${val1}`);
+console.log(`val2 + val3: ${val2 + val3}`);
+console.log(`(val2 + val3) * 0.5: ${(val2 + val3) * 0.5}`);
+console.log(`val4 * 0.1: ${val4 * 0.1}`);
+console.log(`sumVal trước khi làm tròn: ${sumVal}`);
+console.log(`sumVal sau khi làm tròn: ${finalSum}`);
+
+
 
  for (let i=0; i<idDropList.length;i++){
   const selectIDropList = idDropList[i];
@@ -60,9 +72,8 @@ async function selectValueDropList(page, dropdownId, optionIndex, locatorSubScor
   
  }
 
- await expect(page.getByText(sumVal.toFixed(2))).toBeVisible();
+ await expect(page.getByText(finalSum.toFixed(2))).toBeVisible();
 
   await page.locator('//span[text() ="Save as Draft"]').click();
 });
- 
  
