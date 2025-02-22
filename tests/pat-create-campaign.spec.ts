@@ -1,4 +1,4 @@
-/*import { expect } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { test } from '../src/fixture/index.fixture';
 
 
@@ -7,10 +7,11 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
   
   await test.step('Step 2 Navigate to Admin menu then click on PA ', async() =>{
   await page.locator('text = Admin').click();
+  });
   await expect(page.locator('a[href="/admin/performance-assessment"]')).toBeVisible();
   await page.locator('text = Performance Assessment').click();
 });
-
+/*
  await test.step('Step 3 click on Add New Button', async() => {
   await page.locator('text= New Campaign').waitFor({ state: 'visible' , timeout: 60000});
   await page.locator('text= New Campaign').click();

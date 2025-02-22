@@ -1,21 +1,19 @@
-
 name: CICD HCM
+
 on:
   push:
     branches:
-      - main # Kích hoạt khi có push lên nhánh main
+      - main  # Chạy khi có push lên nhánh main
   pull_request:
     branches:
+      - main  # Chạy khi có PR vào nhánh main
 
 jobs:
   Ho_Thom:
-
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
     steps:
-          name: playwright-report
-          path: playwright-report/     # Đảm bảo thư mục báo cáo tồn tại
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -37,6 +35,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-html-report
-          path: test-results/html-report  # Đường dẫn đến thư mục chứa báo cáo HTML
-
-    
+          path: playwright-report/  # Đảm bảo đúng đường dẫn báo cáo

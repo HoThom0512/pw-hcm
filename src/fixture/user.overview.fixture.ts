@@ -7,7 +7,7 @@ import { Expect } from '@playwright/test';
 const test = base.extend <{useroverviewpage: OverviewPage}> ({
 
 useroverviewpage: async ({page},use) => {
-await page.goto('https://qa-nexthcm.banvien.com.vn/login');
+await page.goto('https://qa-nexthcm.banvien.com.vn/login',{timeout:60000});
 
 const loginpage = new LoginPage(page);
 await loginpage.fillInformation("thom.ho","BVC@12345678");
