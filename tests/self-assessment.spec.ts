@@ -12,7 +12,7 @@ test('step 1 login on HCM system', async({useroverviewpage,page}) => {
   await expect(page.locator('main#content-scroll')).toBeVisible();
   });
 
-  await test.step('click on Assessemt tab', async()=>{
+  await test.step('step 3 click on Assessemt tab', async()=>{
   await page.locator('//span[text()="Assessment"]').click();
   });
 
