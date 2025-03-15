@@ -72,7 +72,7 @@ console.log(`sumVal sau khi làm tròn: ${finalSum}`);
   
  }
 
- await expect(page.getByText(finalSum.toFixed(2))).toBeVisible();
+  await expect(page.getByText(finalSum.toFixed(2))).toBeVisible();
 
   await page.locator('//span[text() ="Save as Draft"]').click();
 });
