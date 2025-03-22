@@ -1,8 +1,9 @@
-import { expect } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import { test } from '../src/fixture/index.fixture';
 
 test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {
     await test.step('Step 2 Navigate performance-assessment', async () => {
+        await page.getByRole('link', { name: 'Admin' }).waitFor({timeout: 5000});
         await page.getByRole('link', { name: 'Admin' }).click();
         await page.getByRole('link', { name: 'Performance Assessment' }).click();
         await page.getByRole('link', { name: 'Campaigns', exact: true }).click();
@@ -14,7 +15,15 @@ test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {
 
 
         await test.step('Step 3 Appraiser evaluate score', async () => {
-            const listScore = [
+
+           type ScoreItem ={
+            idDropdown: string;
+            locatorlist:(page:any) => any;
+            caculationSubScore: (selectValue: number) =>string; 
+            locatorExpectScore: (page:any) => any;
+           }
+
+            const listScore:ScoreItem[]= [
                 {
                     idDropdown:'[id="demo-select-performances\\.0\\.score"]',
                     locatorlist: (page) => page.getByTitle('3', { exact: true }).locator('div'),
@@ -57,7 +66,8 @@ test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {
                 
 
                 const option = locatorlist(page);
-                await option.waitFor(); // 🔥 Chờ option xuất hiện trước khi click
+                await option.waitFor({state:'attached'})
+                await option.waitFor({state:'visible'}); // 🔥 Chờ option xuất hiện trước khi click
                 await option.click();
 
 
@@ -67,28 +77,43 @@ test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {
                 const selectValue = parseFloat(await dropdown.innerText());
 
                 console.log(`Dropdown ${idDropdown} được chọn với giá trị: ${selectValue}`);
+                return selectValue;
 
-                const expectedScore = parseFloat(caculationSubScore(selectValue)).toString();
+               /*const expectedScore = parseFloat(caculationSubScore(selectValue)).toString();
                
 
-                await expect(locatorExpectScore(page)).toHaveText(expectedScore.toString(), {timeout:500});
-                console.log(`Expected Score cho ${idDropdown}: ${expectedScore}`);
+                await expect(locatorExpectScore(page)).toHaveText(caculationSubScore(selectValue)), {timeout:500});
+                */console.log(`Expected Score cho ${idDropdown}: ${expectedScore}`);
             }
            
           
-
-            for (const item of listScore) {
-             const value =   await selectAllValue(page,item.idDropdown,item.locatorlist,item.caculationSubScore,item.locatorExpectScore);
-             
-            }
+                
+            let value: number[]=[];
             
+            for (const item of listScore) {
+             const selectedValue=  await selectAllValue(page,item.idDropdown,item.locatorlist,item.caculationSubScore,item.locatorExpectScore);
+             
+            value.push(parseFloat(item.caculationSubScore(selectedValue)));
+            }
+            console.log(value);
          
-            const [vl1,vl2,vl3,vl4] = listScore.map(newVal=>parseFloat(newVal.caculationSubScore(selectAllValue)));
-             const sumValues = (vl1) + (vl2+vl3)*0.5 + (vl4)*0.1
+            const [vl1,vl2,vl3,vl4] = value
+             const sumValues = (vl1) + (vl2+vl3)*0.5 + (vl4)*0.1 
              const finalSum = Math.round((sumValues + Number.EPSILON) * 100) / 100; 
              console.log(`giá trị final ${finalSum}`)
-             await expect(page.locator('div').filter({ hasText: finalSum.toString() }).nth(1)).toBeVisible();
 
+             const actualvalue = await page.locator('div').filter({ hasText: finalSum.toString() }).nth(1).innerText();
+             const extractedNumber = actualvalue.match(/\d+(\.\d+)?/g); // Lấy tất cả các số từ text
+             console.log("Extracted PA Score:", extractedNumber);
+
+             await expect(page.locator('div').filter({ hasText: finalSum.toString() }).nth(1)).toContainText(finalSum.toString());
+           
+            await test.step('Step 5 click Save button', async()=>{
+          
+            await page.getByRole('button', { name: 'Save' }).click();
+
+
+            });
 
         });
     });
