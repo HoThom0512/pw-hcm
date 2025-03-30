@@ -14,7 +14,8 @@
     }
   },
   "include": [
-    "features/**/*.ts",
-    "step_definitions/**/*.ts"
-  ]
+  "features/**/*.ts",
+  "step_definitions/**/*.ts",
+  "*.ts"
+]
 }
