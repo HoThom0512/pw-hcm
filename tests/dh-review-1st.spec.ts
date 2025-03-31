@@ -2,7 +2,7 @@ import { expect, Page } from '@playwright/test';
 import { test } from '../src/fixture/index.fixture';
 
 
-test('step 1 login on HCM system', async ({ dhoverviewpage, page }) => {
+test('step 1 login on HCM system', async ({ roleDH, page }) => {
     await test.step('Step 2 Navigate performance-assessment', async () => {
         await page.getByRole('link', { name: 'Admin' }).waitFor({timeout: 5000});
         await page.getByRole('link', { name: 'Admin' }).click();
