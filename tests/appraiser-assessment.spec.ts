@@ -2,7 +2,7 @@ import { expect, Page } from '@playwright/test';
 import { test } from '../src/fixture/index.fixture';
 
 test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {
-    await test.step('Step 2 Navigate performance-assessment', async () => {
+       await test.step('Step 2 Navigate performance-assessment', async () => {
         await page.getByRole('link', { name: 'Admin' }).waitFor({timeout: 5000});
         await page.getByRole('link', { name: 'Admin' }).click();
         await page.getByRole('link', { name: 'Performance Assessment' }).click();
@@ -90,7 +90,7 @@ test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {
             }
             console.log(value);
          
-            const [vl1,vl2,vl3,vl4] = value
+             const [vl1,vl2,vl3,vl4] = value
              const sumValues = (vl1) + (vl2+vl3)*0.5 + (vl4)*0.1 
              const finalSum = Math.round((sumValues + Number.EPSILON) * 100) / 100; 
              console.log(`giá trị final ${finalSum}`)

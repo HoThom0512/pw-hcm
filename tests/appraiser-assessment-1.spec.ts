@@ -2,6 +2,7 @@ import { expect, Page } from '@playwright/test';
 import { test } from '../src/fixture/index.fixture';
 
 test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {
+
     await test.step('Step 2 Navigate performance-assessment', async () => {
         await page.getByRole('link', { name: 'Admin' }).waitFor({timeout: 5000});
         await page.getByRole('link', { name: 'Admin' }).click();
@@ -13,146 +14,103 @@ test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {
         await expect(page.getByRole('cell', { name: 'TRUONG THI KIM OANH' })).toBeVisible();
         await page.getByRole('row', { name: '1503002 TRUONG THI KIM OANH' }).getByRole('img').nth(2).click();
 
-        await test.step('Step 3 Appraiser evaluate score', async () => {
-
-           type ScoreItem ={
-            idDropdown: string;
-            value: string;
-            caculationSubScore: (selectValue: number) =>string; 
-            locatorExpectScore: (page:any) => any;
-           }
-
-            const listScore: ScoreItem[] =[
-                
-                {
-                    idDropdown:'[id="demo-select-performances\\.0\\.score"]',
-                    value: '2',
-                    caculationSubScore: (selectValue) => (selectValue*0.5).toFixed(2),
-                    locatorExpectScore: (page) => page.locator('.ant-col > .ant-table-wrapper > div > div > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > tr:nth-child(2) > td:nth-child(8)'),
-                    //locatorlist: (page) => page.getByTitle('3', { exact: true }).locator('div'),
-                    //caculationSubScore: (selectValue) => (selectValue*0.5).toFixed(2),
-                    //locatorExpectScore: (page) => page.locator('.ant-col > .ant-table-wrapper > div > div > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > tr:nth-child(2) > td:nth-child(8)'),
-
-
-                },
-
-                {
-                    idDropdown: '[id="demo-select-performances\\.2\\.score"]',
-                    value: '2.5',
-                    caculationSubScore: (selectValue) => (selectValue*0.3).toFixed(2),
-                    locatorExpectScore: (page) => page.locator('tr:nth-child(4) > td:nth-child(8)'),
-                    /*locatorlist: (page)=>page.locator('[id="demo-select-performances\\.2\\.score"]').getByText('2.5'),
-                    caculationSubScore: (selectValue) => (selectValue*0.3).toFixed(2),
-                    locatorExpectScore: (page) => page.locator('tr:nth-child(4) > td:nth-child(8)'),*/
-
-                },
-                {
-                    idDropdown: '[id="demo-select-performances\\.3\\.score"]',
-                    value: '3',
-                    caculationSubScore: (selectValue) => (selectValue*0.7).toFixed(2),
-                    locatorExpectScore: (page) => page.locator('tr:nth-child(5) > td:nth-child(8)'),
-                    /*locatorlist:(page)=> page.locator('[id="demo-select-performances\\.3\\.score"]').getByText('2.5').nth(2),
-                    caculationSubScore: (selectValue) => (selectValue*0.7).toFixed(2),
-                    locatorExpectScore: (page) => page.locator('tr:nth-child(5) > td:nth-child(8)')*/
-
-                },
-                {
-                    idDropdown:'[id="demo-select-performances\\.5\\.score"]',
-                    value: '0.5',
-                    caculationSubScore: (selectValue) => (-1*selectValue*1).toFixed(2),
-                    locatorExpectScore: (page) => page.locator('tr:nth-child(7) > td:nth-child(8)'),
-                    /*locatorlist:(page)=> page.locator('[id="demo-select-performances\\.5\\.score"]').getByText('0.5', { exact: true }).nth(4),
-                    caculationSubScore: (selectValue) => (-1*selectValue*1).toFixed(2),
-                    locatorExpectScore: (page) => page.locator('tr:nth-child(7) > td:nth-child(8)'),*/
-
-                }
-
-
-            ];
-
-            async function selectAllValue(page,idDropdown,value,caculationSubScore,locatorExpectScore) {
-              
-                await page.locator(`${idDropdown}`).click()
-                await page.waitForSelector(`${idDropdown} .ant-select-dropdown`, { state: 'attached' });
-                await page.locator(`${idDropdown} div.ant-select-item-option[title= ${value}]`).click({force:true});
-                await page.locator('body').click();
-                
-                
-                
-                
-                
-                
-                /*const dropdown = page.locator(idDropdown);
-                await dropdown.waitFor({state:'visible'});
-                await dropdown.click();
-                
-
-                const option = locatorlist(page);
-                await option.waitFor(); // 🔥 Chờ option xuất hiện trước khi click
-                await option.click();
-                      
-
-                await page.locator('body').click();
-            
-                const selectedValue = parseFloat(await dropdown.innerText());
-
-                console.log(`Dropdown ${idDropdown} được chọn với giá trị: ${selectedValue}`);
-                return selectedValue;*/
-            }
-
-
-
-           
-          
-                
-            /*let value: number[]=[];
-            
-            for (const item of listScore) {
-             const dropdownValue=  await selectAllValue(page,item.idDropdown,item.locatorlist,item.caculationSubScore,item.locatorExpectScore);
-             
-            value.push(parseFloat(item.caculationSubScore(dropdownValue)));
-            
-            }
-            console.log(value);
-         
-            const [vl1,vl2,vl3,vl4] = value
-             const sumValues = (vl1) + (vl2+vl3)*0.5 + (vl4)*0.1 
-             const finalSum = Math.round((sumValues + Number.EPSILON) * 100) / 100; 
-             console.log(`giá trị final ${finalSum}`)
-
-             const actualvalue = await page.locator('div').filter({ hasText: finalSum.toString() }).nth(1).innerText();
-             const extractedNumber = actualvalue.match(/\d+(\.\d+)?/g); // Lấy tất cả các số từ text
-             console.log("Extracted PA Score:", extractedNumber);
-
-             await expect(page.locator('div').filter({ hasText: finalSum.toString() }).nth(1)).toContainText(finalSum.toString());
-            
-            
-            
-            
-            
-            
-             /*await test.step('Step 5 click Save button', async()=>{
-
-             await page.locator('#demo-select-performances\\.0\\.score').click();
-             await page.waitForSelector('.ant-select-dropdown', { state: 'attached' });
-             await page.locator('#demo-select-performances\\.0\\.score div.ant-select-item-option[title="1"]').click({force:true});
-          
-            await page.click('body');
-
-             await page.locator('#demo-select-performances\\.2\\.score').click();
-             await page.waitForSelector('.ant-select-dropdown', { state: 'attached' });
-             await page.locator('#demo-select-performances\\.2\\.score div.ant-select-item-option[title="3"]').click({force:true});
-             */
-
-
-
-            //await page.getByRole('button', { name: 'Save' }).click();
-            
-       
-
-            });
 
         });
+      
+
+    await test.step('Step 3 Appraiser evaluate score', async () => {
+
+     const evaluateValues = [
+
+        {idDropdown:'#demo-select-performances\\.0\\.score', 
+        option:'1',
+        subScore: (scoreselected)=>(scoreselected*0.5).toFixed(2),
+        expectedSubScore: '.ant-col > .ant-table-wrapper > div > div > .ant-table > .ant-table-container > .ant-table-content > table > .ant-table-tbody > tr:nth-child(2) > td:nth-child(8)'
+        },
+
+        {idDropdown:'#demo-select-performances\\.2\\.score',
+        option:'2',
+        subScore: (scoreselected)=>(scoreselected*0.3).toFixed(2),
+        expectedSubScore: 'tr:nth-child(4) > td:nth-child(8)'    
+        },
 
     
+        {idDropdown:'#demo-select-performances\\.3\\.score', 
+        option:'2.5',
+        subScore: (scoreselected)=>(scoreselected*0.7).toFixed(2),
+        expectedSubScore: 'tr:nth-child(5) > td:nth-child(8)'
+        },
+
+        {idDropdown:'#demo-select-performances\\.5\\.score', 
+        option:'0.5',
+        subScore: (scoreselected)=>(-1*scoreselected*1).toFixed(2),
+        expectedSubScore: 'tr:nth-child(7) > td:nth-child(8)'
+        },
+     ]
+
+
+
+   async function selectAllCriteria(page,idDropdown,option,subScorefn,expectedSubScore){
+       //step 1: click on dropdown to open dropdownlist
+        const selectedItem = page.locator(`${idDropdown} span.ant-select-selection-item`);
+        await selectedItem.waitFor({state:'visible'});
+        await selectedItem.click({force:true});
+
+      //step 2: wait dropdownmenu to visible
+        const dropdownMenu = page.locator(`${idDropdown} div.ant-select-dropdown`);
+        await page.waitForSelector(`${idDropdown} div.ant-select-dropdown`,{state: 'attached'});
+        await dropdownMenu.waitFor({state:'visible',timeout: 7000});
+
+      ///step 3: wait listvalue in dropdown_menu make sure visible 
+        const listVaule = page.locator(`${idDropdown} div.ant-select-item-option[title ="${option}"]`);
+        await listVaule.waitFor({state:'visible',timeout:7000});
+        await listVaule.click({force:true});
+
+      //step 4: after selectitem make sure the value realy visible 
+        const itemSelected = page.locator(`${idDropdown} span.ant-select-selection-item[title="${option}"]`);
+        await itemSelected.waitFor({state: 'visible', timeout:500})
+      
+
+      //step 5: click out side to close dropdown
+        await page.locator('body').click();
+
+        const SubScoreText = await itemSelected.innerText();
+
+        const selectedScore = parseFloat(SubScoreText); // Chuyển về số thực
+        const actualSubScore = parseFloat(subScorefn(selectedScore)).toString();
+
+        console.log(`các giá trị được của dropdown ${idDropdown} là ${actualSubScore}`); // Đảm bảo trả về số
+        await expect(page.locator(expectedSubScore)).toHaveText(actualSubScore);
+        return actualSubScore;
+
+    }
+   
+     
+    let value:number[] =[]
+    for (const selectValue of evaluateValues) {
+     const sumValue = await selectAllCriteria(page,selectValue.idDropdown,selectValue.option,selectValue.subScore,selectValue.expectedSubScore);
+    
+     value.push(parseFloat(sumValue));
+    }
+    
+    const [v1,v2,v3,v4] = value;
+
+    const finalValue = (v1) +(v2+v3)*0.5 + (v4)*0.1
+    const roundValue = Math.round((finalValue + Number.EPSILON)*100)/100
+
+    console.log(`giá trị sum là ${roundValue}`)
+
+
+    const paScore = await page.locator('div.card__score--value.bad > div').textContent();
+    console.log(`PA Score ${paScore}`);
+
+    await expect(page.locator('div').filter({ hasText: roundValue.toString() }).nth(1)).toContainText(roundValue.toString());
+           
+
+     });
     });
+
+
+
+
+

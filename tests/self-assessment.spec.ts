@@ -1,5 +1,6 @@
-import { expect } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import { test } from '../src/fixture/index.fixture';
+import {selectAllCriteria} from '../src/utils/dropdownUtils';
 
 
 
@@ -25,24 +26,47 @@ test('step 1 login on HCM system', async({useroverviewpage,page}) => {
 // b. viết vòng lặp for i hoặc for of để lặp qua 4 drop down
 // c. verify total self score
 
-async function selectValueDropList(page, dropdownId, optionIndex, locatorSubScore, expectValue) {
-  await page.locator(`div[id = "${dropdownId}"]`).click();
-  await page.locator(`div[id="${dropdownId}"] >> div.ant-select-item-option:nth-child(${optionIndex})`).click({timeout:60000});
-  await page.locator('body').click();
-  const resultActual = await page.locator(locatorSubScore).innerText();
-  await expect(resultActual).toBe(expectValue);
- 
- }
+
 
  const idDropList = [
-    {id:'demo-select-selfAssessment.0.self_assessment_score',optionIndex:'3', locatorSubScore: '//tbody/tr[2]/td[5]',expectValue:'0.5'},
-    {id:'demo-select-selfAssessment.2.self_assessment_score',optionIndex:'4',locatorSubScore: '//tbody/tr[4]/td[5]',expectValue:'0.45'},
-    {id:'demo-select-selfAssessment.3.self_assessment_score',optionIndex:'5',locatorSubScore: '//tbody/tr[5]/td[5]',expectValue:'1.4'},
-    {id:'demo-select-selfAssessment.5.self_assessment_score',optionIndex:'2',locatorSubScore: '//tbody/tr[7]/td[5]',expectValue:'-0.5'},
+    {id:'demo-select-selfAssessment.0.self_assessment_score',optionIndex:'3',expectSub: '//tbody/tr[2]/td[5]',actualScore:(item) => (item*0.5).toFixed(2)},
+    {id:'demo-select-selfAssessment.2.self_assessment_score',optionIndex:'4',expectSub: '//tbody/tr[4]/td[5]',actualScore:(item) => (item*0.3).toFixed(2)},
+    {id:'demo-select-selfAssessment.3.self_assessment_score',optionIndex:'5',expectSub: '//tbody/tr[5]/td[5]',actualScore:(item) => (item*0.7).toFixed(2)},
+    {id:'demo-select-selfAssessment.5.self_assessment_score',optionIndex:'2',expectSub: '//tbody/tr[7]/td[5]',actualScore:(item) => (-1*item*1).toFixed(2)},
  
  ]
 
- const [val1,val2,val3,val4] = idDropList.map(score=> parseFloat(score.expectValue));
+ for (const listItem of idDropList) {
+
+  const selectListItem = {
+
+    
+    page: page, 
+    idDropdown: listItem.id, 
+    option: listItem.optionIndex, 
+    subScorefn: (item: number) => listItem.actualScore(item), 
+    expectedSubScore: listItem.expectSub,
+
+
+  };
+
+  const sumSelfAssessment = await selectAllCriteria(selectListItem);
+
+  
+  }
+
+
+ }
+
+
+
+
+
+
+
+
+});
+ /*const [val1,val2,val3,val4] = idDropList.map(score=> parseFloat(score.expectValue));
  
  console.log(`val1: ${val1}, val2: ${val2}, val3: ${val3}, val4: ${val4}`);
 
@@ -79,3 +103,4 @@ console.log(`sumVal sau khi làm tròn: ${finalSum}`);
 
 });
  
+*/
