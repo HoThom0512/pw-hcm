@@ -1,7 +1,7 @@
 // utils/dropdownUtils.ts
 
 import { Page, Locator } from 'playwright';
-import { Expect } from 'playwright/test';
+import { expect } from 'playwright/test';
 
 /**
  * Hàm selectAllCriteria để thao tác với dropdown
@@ -13,22 +13,32 @@ import { Expect } from 'playwright/test';
  * @returns Giá trị subScore đã tính toán
  * @pa
   */
-export async function selectAllCriteria(
+type selectAllCriteriaOption ={
   page: Page, 
   idDropdown: string, 
   option: string, 
-  subScorefn: Function, 
+  subScorefn: (selectScore:number) => string;
   expectedSubScore: string
+
+
+}
+
+
+
+
+export async function selectAllCriteria(
+ { page, idDropdown, option,subScorefn,
+  expectedSubScore} :selectAllCriteriaOption
 ): Promise<string> {
 
     // Step 1: Click on dropdown to open the dropdown list
     const selectedItem = page.locator(`${idDropdown} span.ant-select-selection-item`);
-    await selectedItem.waitFor({ state: 'visible' });
+    await selectedItem.waitFor({state:'visible'});
     await selectedItem.click({ force: true });
 
     // Step 2: Wait for the dropdown menu to be visible
     const dropdownMenu = page.locator(`${idDropdown} div.ant-select-dropdown`);
-    await page.waitForSelector(`${idDropdown} div.ant-select-dropdown`, { state: 'attached' });
+    await page.waitForSelector(`${idDropdown} div.ant-select-dropdown`, { state: 'attached',timeout:10000 });
     await dropdownMenu.waitFor({ state: 'visible', timeout: 7000 });
 
     // Step 3: Wait for the value in the dropdown menu to be visible
@@ -41,13 +51,14 @@ export async function selectAllCriteria(
     await itemSelected.waitFor({ state: 'visible', timeout: 500 });
 
     // Step 5: Click outside to close the dropdown
-    await page.locator('body').click();
+    //await page.locator('body').click();
+    await page.mouse.click(0, 0);
 
     const SubScoreText = await itemSelected.innerText();
     const selectedScore = parseFloat(SubScoreText); // Convert to float
     const actualSubScore = parseFloat(subScorefn(selectedScore)).toString();
 
-    console.log(`Values selected for dropdown ${idDropdown} are ${actualSubScore}`); // Ensure returning the number
+    console.log(`giá trị ${idDropdown} sau khi chọn là ${actualSubScore}`); // Ensure returning the number
     
     // Kiểm tra giá trị actualSubScore đối với locator của expectedSubScore
     await expect(page.locator(expectedSubScore)).toHaveText(actualSubScore);
