@@ -1,7 +1,7 @@
 // utils/dropdownUtils.ts
 
 import { Page, Locator } from 'playwright';
-import { Expect } from 'playwright/test';
+import { expect} from 'playwright/test';
 
 /**
  * Hàm selectAllCriteria để thao tác với dropdown
@@ -11,15 +11,22 @@ import { Expect } from 'playwright/test';
  * @param subScorefn - Hàm tính toán giá trị subScore
  * @param expectedSubScore - Locator của subScore mà bạn muốn kiểm tra
  * @returns Giá trị subScore đã tính toán
- * @pa
+ * 
   */
-export async function selectAllCriteria(
-  page: Page, 
-  idDropdown: string, 
-  option: string, 
-  subScorefn: Function, 
-  expectedSubScore: string
-): Promise<string> {
+ type SelectAllCriteriaOptions = {
+   
+ 
+    page: Page, 
+    idDropdown: string, 
+    option: string, 
+    subScorefn: Function, 
+    expectedSubScore: string
+
+}
+
+
+export async function selectAllCriteria({page, idDropdown,option,subScorefn,expectedSubScore}: SelectAllCriteriaOptions): Promise<string> {
+     {
 
     // Step 1: Click on dropdown to open the dropdown list
     const selectedItem = page.locator(`${idDropdown} span.ant-select-selection-item`);
@@ -53,3 +60,4 @@ export async function selectAllCriteria(
     await expect(page.locator(expectedSubScore)).toHaveText(actualSubScore);
     return actualSubScore;
 }
+},
