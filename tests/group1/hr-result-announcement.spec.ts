@@ -1,6 +1,6 @@
 import { expect, Page } from '@playwright/test';
-import { test } from '../src/fixture/index.fixture';
-import { popupMessage } from '../src/utils/notificationUtils';
+import { test } from '../../src/fixture/index.fixture';
+import { popupMessage } from '../../src/utils/notificationUtils';
 
 
 test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {

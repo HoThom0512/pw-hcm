@@ -30,10 +30,10 @@ test('step 1 login on HCM system', async({useroverviewpage,page}) => {
 
 
  const idDropList = [
-    {id:'#demo-select-selfAssessment\\.0\\.self_assessment_score',optionIndex:'3.5',expectSub: '//tbody/tr[2]/td[5]',actualScore:(item) => (item*0.5).toFixed(2)},
-    {id:'#demo-select-selfAssessment\\.2\\.self_assessment_score',optionIndex:'2',expectSub: '//tbody/tr[4]/td[5]',actualScore:(item) => (item*0.3).toFixed(2)},
-    {id:'#demo-select-selfAssessment\\.3\\.self_assessment_score',optionIndex:'1',expectSub: '//tbody/tr[5]/td[5]',actualScore:(item) => (item*0.7).toFixed(2)},
-    {id:'#demo-select-selfAssessment\\.5\\.self_assessment_score',optionIndex:'0.5',expectSub: '//tbody/tr[7]/td[5]',actualScore:(item) => (-1*item*1).toFixed(2)},
+    {id:'#demo-select-selfAssessment\\.0\\.self_assessment_score',optionIndex:'3.5',expectSub: '//tbody/tr[2]/td[5]',actualScore:(item) => (item*0.5).toFixed(2),locatorComment:'div[name ="selfAssessment\\.0\\.employee_comment"]', comment:''},
+    {id:'#demo-select-selfAssessment\\.2\\.self_assessment_score',optionIndex:'4',expectSub: '//tbody/tr[4]/td[5]',actualScore:(item) => (item*0.3).toFixed(2),locatorComment:'div[name ="selfAssessment\\.2\\.employee_comment"]', comment:''},
+    {id:'#demo-select-selfAssessment\\.3\\.self_assessment_score',optionIndex:'2',expectSub: '//tbody/tr[5]/td[5]',actualScore:(item) => (item*0.7).toFixed(2),locatorComment:'div[name ="selfAssessment\\.3\\.employee_comment"]', comment:'gree3'},
+    {id:'#demo-select-selfAssessment\\.5\\.self_assessment_score',optionIndex:'0.5',expectSub: '//tbody/tr[7]/td[5]',actualScore:(item) => (-1*item*1).toFixed(2),locatorComment:'div[name ="selfAssessment\\.5\\.employee_comment"]', comment:'gree4'},
  
  ]
 
@@ -47,22 +47,21 @@ test('step 1 login on HCM system', async({useroverviewpage,page}) => {
     option: listItem.optionIndex, 
     subScorefn: (item: number) => listItem.actualScore(item), 
     expectedSubScore: listItem.expectSub,
+    locatorComment: listItem.locatorComment,
+    comment: listItem.comment,
 
   }
+
   const sumSelfAssessment = await selectAllCriteria(selectListItem);
   valueSelf.push(parseFloat(sumSelfAssessment));
 
-  if (listItem.optionIndex >="3.5") {
-    const commentTextBox = page.locator('div[name="selfAssessment\\.0\\.employee_comment"] div[role="textbox"]');
-    await commentTextBox.waitFor({ state: 'visible' });
-    await commentTextBox.fill('agree');
+  if (parseFloat(listItem.optionIndex) >=3.5 && listItem.comment ==='') 
+    {
+    await selectAllCriteria(selectListItem)
 
-
+  
   }
-
-  }
-
-
+}
 
   const[s1,s2,s3,s4] = valueSelf
 
@@ -81,24 +80,27 @@ test('step 1 login on HCM system', async({useroverviewpage,page}) => {
   
    await page.getByRole('button',{name:'Save as Draft'}).click();
   
-   await popupMessage(page,'.ant-notification.ant-notification-bottomLeft','Self assessment successfully!');
+   await popupMessage(page,'.ant-notification.ant-notification-bottomLeft','Comment/Evidence is required when score is equal or above 3.5');
+  });
  
+
+  
    await test.step('Step 5 click on "Submit" button',async()=>{
   
-    await page.getByRole('button',{name:'Submit',exact:true}).click();
+   await page.getByRole('button',{name:'Submit',exact:true}).click();
     
-    const popupConfirm = page.locator('.ant-modal-body')
-    await popupConfirm.waitFor({state:'visible'});
-    await page.getByRole('button',{name:'Confirm',exact:true}).click();
+   const popupConfirm = page.locator('.ant-modal-body')
+   await popupConfirm.waitFor({state:'visible'});
+   await page.getByRole('button',{name:'Confirm',exact:true}).click();
+   await popupMessage(page,'.ant-notification.ant-notification-bottomLeft','Comment/Evidence is required when score is equal or above 3.5');
 
   })
-
 
   
   });
 
 
-});
+
 
 
 
@@ -146,18 +148,31 @@ console.log(`sumVal sau khi làm tròn: ${finalSum}`);
   await page.getByRole('button', { name: 'Save' }).click();
 
 });
- 
+ */
 
-
-/*click vào dropdown 
- await page.locator('#demo-select-selfAssessment\\.0\\.self_assessment_score span.ant-select-selection-item').click();
+/*
+//click vào dropdown 
+ await page.locator('#demo-select-selfAssessment\\.2\\.self_assessment_score span.ant-select-selection-item').click();
  
 //chờ list menu mở
-const listMenu = page.locator('#demo-select-selfAssessment\\.0\\.self_assessment_score div.ant-select-dropdown');
-await page.waitForSelector('#demo-select-selfAssessment\\.0\\.self_assessment_score div.ant-select-dropdown',{state:'attached'});
+const listMenu = page.locator('#demo-select-selfAssessment\\.2\\.self_assessment_score div.ant-select-dropdown');
+await page.waitForSelector('#demo-select-selfAssessment\\.2\\.self_assessment_score div.ant-select-dropdown',{state:'attached'});
 await listMenu.waitFor({state:'visible'});
+
+// scroll 
+
+const scrollBar = page.locator('div[id="demo-select-selfAssessment.2.self_assessment_score"] div.rc-virtual-list-scrollbar-thumb');
+await scrollBar.evaluate((item)=>{
+
+  item.scrollTop = item.scrollHeight;
+});
+
+// chờ option hiển thị
+const optionSelect = page.locator('#demo-select-selfAssessment\\.2\\.self_assessment_score div.ant-select-item-option[title="3.5"]');
+await page.waitForSelector('#demo-select-selfAssessment\\.2\\.self_assessment_score div.ant-select-item-option[title="3.5"]',{state:'attached'});
 //chọn giá trị từ listmenu 
-await  page.locator('#demo-select-selfAssessment\\.0\\.self_assessment_score div.ant-select-item-option[title="3"]').click({force:true});
+await optionSelect.click({force:true});
 await page.locator('body').click();
 
-});*/
+});
+*/

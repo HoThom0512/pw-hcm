@@ -10,7 +10,8 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "*": ["node_modules/*"]
+      "@fixtures/*": ["src/fixture/*"],
+      "@utils/*": ["src/utils/*"]
     }
   },
   "include": [

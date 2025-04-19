@@ -7,6 +7,7 @@ export async function popupMessage(page:Page, locatorPopup:string, expectedConte
 
  await commonNotification.waitFor({state:'visible'});
  await expect(page.locator(locatorPopup)).toHaveText(expectedContent);
+ await page.locator('.ant-notification-notice-close').click();
 }
 
 

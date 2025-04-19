@@ -1,7 +1,7 @@
 import { expect, Page } from '@playwright/test';
-import { test } from '../src/fixture/index.fixture';
-import { selectAllCriteria } from '../src/utils/dropdownUtils';
-import { savePopup } from '../src/utils/dialogUtils';
+import { test } from '../../src/fixture/index.fixture';
+import { selectAllCriteria } from '../../src/utils/dropdownUtils';
+import { savePopup } from '../../src/utils/dialogUtils';
 
 test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {
 

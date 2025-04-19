@@ -1,5 +1,5 @@
 import { expect, Page } from '@playwright/test';
-import { test } from '../src/fixture/index.fixture';
+import { test } from '../../src/fixture/index.fixture';
 
 
 test('step 1 login on HCM system', async ({ roleDH, page }) => {
