@@ -10,7 +10,7 @@ useroverviewpage: async ({page},use) => {
 await page.goto('https://qa-nexthcm.banvien.com.vn/login',{timeout:60000});
 
 const loginpage = new LoginPage(page);
-await loginpage.fillInformation("oanh.truong","BVC@12345678");
+await loginpage.fillInformation("thao.luu-mai","BVC@12345678");
 await loginpage.Login();
 
 
