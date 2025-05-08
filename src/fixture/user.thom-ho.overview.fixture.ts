@@ -3,21 +3,26 @@ import { LoginPage } from "../pom/login.page";
 import { OverviewPage } from '../pom/overview.page';
 import { Expect } from '@playwright/test';
 
+type userThom ={
 
-const test = base.extend <{useroverviewpage: OverviewPage}> ({
+    roleUserThom: OverviewPage
+}
 
-useroverviewpage: async ({page},use) => {
+
+
+const test = base.extend <userThom> ({
+
+roleUserThom: async ({page},use) => {
 await page.goto('https://qa-nexthcm.banvien.com.vn/login',{timeout:60000});
 
 const loginpage = new LoginPage(page);
-await loginpage.fillInformation("thao.luu-mai","BVC@12345678");
+await loginpage.fillInformation("thom.ho","BVC@12345678");
 await loginpage.Login();
 
 
 await expect(page.locator('text=Overview')).toBeVisible();
 
-const useroverviewpage = new OverviewPage(page);
-await use(useroverviewpage);
+await use(new OverviewPage(page));
 
 }
 

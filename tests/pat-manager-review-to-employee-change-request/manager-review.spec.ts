@@ -1,6 +1,6 @@
 import { expect, Page } from '@playwright/test';
-import { test } from '../src/fixture/index.fixture';
-import { popupMessage } from '../src/utils/notificationUtils';
+import { test } from '../../src/fixture/index.fixture';
+import { popupMessage } from '../../src/utils/notificationUtils';
 
 
 test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {
@@ -20,27 +20,28 @@ test('step 1 login on HCM system', async ({ apuseroverviewpage, page }) => {
         });
       
 
-      await test.step('Step 3 checked in f2f checkbox', async () => {
-      //verify state checkbox
-      const checkbox=  page.locator('td:nth-child(12) > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').first();
+      await test.step('Step 3 checked in "Reviewed by Manager" checkbox', async () => {
+     
+        // //verify state checkbox
+      const checkbox=  page.locator('td:nth-child(10) > .ant-checkbox-wrapper > .ant-checkbox > .ant-checkbox-input').first();
 
       await checkbox.waitFor({state:'visible',timeout:500});
+      await expect(checkbox).toBeEnabled();
+
       await checkbox.click();
       const ischecked = await checkbox.isChecked();
+      await expect(checkbox).toBeChecked();
       console.log(`the status for checkbox is ${ischecked}`) ; 
 
-       //verify state checkbox
-
+     //verify state checkbox
        /*const notification = page.locator('.ant-notification.ant-notification-bottomLeft');
        await notification.waitFor({state:'visible',timeout:5000});
-       await expect(notification).toHaveText('Update F2F status successfully!');
+       await expect(notification).toHaveText('Reviewed employee successfully!');
+
        */
 
-       //Reviewed employee successfully!
-
-       await popupMessage(page,'.ant-notification.ant-notification-bottomLeft','Update F2F status successfully!');
-       
-      });
+       await popupMessage(page,'.ant-notification.ant-notification-bottomLeft','Reviewed employee successfully!');
+       });
 
     
     });

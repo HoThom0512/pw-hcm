@@ -11,7 +11,7 @@ roleDH: OverviewPage;
 }
 
 
-const test = base.extend <{roleDH: OverviewPage}> ({
+const test = base.extend <fixtureRoleDH> ({
 
 roleDH: async ({page},use) => {
     

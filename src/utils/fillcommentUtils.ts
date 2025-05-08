@@ -17,8 +17,6 @@ type fillComment = {
 }
 
 export async function fillCommentDropdown ({locatorComment,comment}:fillComment):Promise<string> {
-
-
 return comment
 
 }
