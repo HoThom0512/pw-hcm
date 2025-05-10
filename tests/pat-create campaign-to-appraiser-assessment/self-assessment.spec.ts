@@ -5,7 +5,7 @@ import {popupMessage} from '../../src/utils/notificationUtils';
  
 
 
-test('step 1 login on HCM system', async({useroverviewpage,page}) => {
+test('step 1 login on HCM system', async({roleUserOanh,page}) => {
   
   await test.step('Step 2 Navigate My Performance ', async() =>{
   
