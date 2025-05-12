@@ -9,7 +9,6 @@ test (' Step 1 login to system', async({roleUserOanh,page})=>{
  await page.getByRole('link',{name:'My Time', exact:true}).click();
  await page.getByText('My Working Mode').click();
 
-
 //locator rowAM
 const rowAM = await page.locator('div.relative > div.row:nth-child(1) > div.box-empty').nth(1);
 //locator rowPM

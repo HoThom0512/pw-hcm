@@ -201,78 +201,8 @@ await expect(selectedEndDate).toHaveValue(`${expectedEnddate}`);
  }
 
 
-
 });
 
 
 
 
-/*stage 1
-//Select startdate
-await page.locator('input[name="self_assessment_start_date"]').click();
-
-const startDatePickerPopup = page.locator('div.ant-picker-panel')
-await startDatePickerPopup.nth(0).waitFor({state:'visible'});
-// click next button to fill date
-await page.locator('div.ant-picker-panel button.ant-picker-header-next-btn').nth(0).click();
-await startDatePickerPopup.waitFor({state:'visible'});
-
-//select start date
-const selectedStartDate = page.locator('input[title="05/01/2025"][name="self_assessment_start_date"]')
-await page.locator('td[title="2025-05-01"] div.ant-picker-cell-inner').nth(0).click();
-await expect(selectedStartDate).toHaveValue("05/01/2025");
-
-//select end date
-//1. click input to open pop up
-await page.locator('input[name="self_assessment_end_date"]').click();
-const popupEndDate = page.locator('div.ant-picker-dropdown div.ant-picker-date-panel');
-await popupEndDate.nth(1).waitFor({state:'visible'});
-
-//2. click next button to select date
-await page.locator('div.ant-picker-date-panel button.ant-picker-header-next-btn').nth(1).click();
-await popupEndDate.nth(1).waitFor({state:'visible'});
-
-const selectedEndDate = page.locator('input[title="05/07/2025"][name="self_assessment_end_date"]')
-await page.locator('td[title="2025-05-07"] div.ant-picker-cell-inner').nth(1).click();
-await expect(selectedEndDate).toHaveValue("05/07/2025");
-
-
-
-//stage 2
-///Start Date
-//click input to open pop up
-await page.locator('input[name="assessment_start_date"]').click();
-
-const startDateStage2Popup = page.locator('div.ant-picker-panel')
-await startDateStage2Popup.nth(2).waitFor({state:'visible'});
-
-// click next button to fill date
-await page.locator('div.ant-picker-date-panel button.ant-picker-header-next-btn').nth(2).click();
-await startDateStage2Popup.nth(2).waitFor({state:'visible'});
-
-// select start date
-const startDateStage2Select = page.locator('input[title="05/08/2025"][name="assessment_start_date"]')
-await page.locator('td[title="2025-05-08"] div.ant-picker-cell-inner').nth(2).click();
-// assert
-await expect(startDateStage2Select).toHaveValue("05/08/2025");
-
-
-/// End date 
-//click input end date to open pop up
-await page.locator('input[name="assessment_end_date"]').click();
-const endDateStage2Popup = page.locator('div.ant-picker-dropdown div.ant-picker-date-panel');
-await endDateStage2Popup.nth(3).waitFor({state:'visible'});
-
-/// click next button to fill date
-await page.locator('div.ant-picker-date-panel button.ant-picker-header-next-btn').nth(3).click();
-await startDateStage2Popup.nth(3).waitFor({state:'visible'});
-
-// select end date
-const endDateStage2Select = page.locator('input[title="05/09/2025"][name="assessment_end_date"]')
-await page.locator('td[title="2025-05-09"] div.ant-picker-cell-inner').nth(3).click();
-await expect(endDateStage2Select).toHaveValue("05/09/2025");
-
-
- });
-}); 
-*/
