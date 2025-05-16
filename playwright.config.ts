@@ -31,8 +31,10 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
 
-    screenshot: 'on',
-    video: 'on',
+    //screenshot: 'on',
+    //video: 'on',
+    //video: 'retain-on-failure', 
+    //screenshot: 'only-on-failure', 
     trace: 'on', 
     headless: false,  // Mở UI trình duyệt
    // launchOptions: {

@@ -31,8 +31,8 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test tests/employee-set-wkm/employee-creat-wkm-onsite.spec.ts          
 
-      - name: Upload HTML Report as Artifact
+      - name: Upload Playwright Report + Screenshots + Videos
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-html-report
-          path: playwright-report/  # Đảm bảo đúng đường dẫn báo cáo
+          name:  playwright-report/
+          path: test-results/  # Đảm bảo đúng đường dẫn báo cáo

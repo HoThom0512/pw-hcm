@@ -1,7 +1,7 @@
 
+// câu lệnh để run code: npx ts-node typescript/code-practice.ts
 
-
- function sumAr(sumArray: number[]) {
+ /*function sumAr(sumArray: number[]) {
      let total = 0;
     for (let i=0; i<sumArray.length; i++){
 
@@ -14,3 +14,6 @@
     return total;
 
  }
+
+*/
+ console.log('CI:', process.env.CI);
