@@ -194,8 +194,8 @@ const selectedEndDate = page.locator(`input[title="${expectedEnddate}"][name="${
 await page.locator(`td[title="${endDate}"] div.ant-picker-cell-inner`).nth(indexEndDate).click();
 await expect(selectedEndDate).toHaveValue(`${expectedEnddate}`);
 
-//await page.getByRole('button',{name:'Next'}).click();
-//await page.getByRole('button',{name:'Finish'}).click();
+await page.getByRole('button',{name:'Next'}).click();
+await page.getByRole('button',{name:'Finish'}).click();
 
 
  }

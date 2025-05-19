@@ -16,4 +16,13 @@
  }
 
 */
- console.log('CI:', process.env.CI);
+ //console.log('CI:', process.env.CI);
+
+ let i = 0;
+
+ while(true) {
+ console.log('đếm',i);
+i++;
+if(i>=5) break;
+
+ }
