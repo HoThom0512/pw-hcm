@@ -50,40 +50,40 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
     const stageCamPaign= [
         {
           name: 'self_assessment',
-          startDate: '2025-05-24',
-          expectStartDate: '05/24/2025',
+          startDate: '2025-05-29',
+          expectStartDate: '05/29/2025',
           endDate: '2025-06-01',
           expectEndDate: '06/01/2025',
         
         },
         {
           name: 'assessment',
-          startDate: '2025-05-25',
-          expectStartDate: '05/25/2025',
+          startDate: '2025-05-29',
+          expectStartDate: '05/29/2025',
           endDate: '2025-06-02',
           expectEndDate: '06/02/2025',
           
         },
         {
           name: 'first_review',
-          startDate: '2025-05-26',
-          expectStartDate: '05/26/2025',
+          startDate: '2025-05-29',
+          expectStartDate: '05/29/2025',
           endDate: '2025-06-03',
           expectEndDate: '06/03/2025',
          
         },
         {
           name: 'face_to_face_meeting',
-          startDate: '2025-05-27',
-          expectStartDate: '05/27/2025',
+          startDate: '2025-05-29',
+          expectStartDate: '05/29/2025',
           endDate: '2025-06-04',
           expectEndDate: '06/04/2025',
           
         },
         {
           name: 'second_review',
-          startDate: '2025-05-28',
-          expectStartDate: '05/28/2025',
+          startDate: '2025-05-29',
+          expectStartDate: '05/29/2025',
           endDate: '2025-06-05',
           expectEndDate: '06/05/2025',
          
@@ -158,7 +158,7 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
      //2. wait pop up date picker visible
      //const startDatePopup = page.locator('div.ant-picker-panel').filter({has:inputStart});
      //await page.locator('div.ant-picker-panel:visible').waitFor({ state: 'visible' });
-    await selectDMY(popupStartDate,startDate)
+    await selectDMY(page,popupStartDate,startDate)
      //3. click next button to select date
      //await popup.locator('div.ant-picker-header > button.ant-picker-header-next-btn').click();
     
@@ -181,7 +181,7 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
     //const endDatePopup = page.locator('div.ant-picker-panel');
     //await popupEnd.waitFor({state:'visible'});
     
-    await selectDMY(popupEnd,endDate)
+    await selectDMY(page,popupEnd,endDate)
     //7. click next button to select date
     //await popupEnd.locator('div.ant-picker-header > button.ant-picker-header-next-btn').click();
     
@@ -200,38 +200,47 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
     
      }
 
-     async function selectDMY(popup: Locator,targetDateStr: string) 
-     
-    {
-        const targetDate = new Date(targetDateStr);
-        const targetM= targetDate.toLocaleString('en-US',{month:'long'})
-        const targetY= targetDate.getFullYear().toString();
-        let count = 0;
-        const loopMonth = 12;
-        while(count++<loopMonth) {
-
-          const currentM = await popup.locator('button.ant-picker-month-btn').textContent();
-          const currentY = await popup.locator('button.ant-picker-year-btn').textContent();
-          console.log(`Loop ${count} | Current: Month=${currentM?.trim()} Year=${currentY?.trim()} | Target: Month=${targetM} Year=${targetY}`);
-          if (currentM?.trim()===targetM&&currentY?.trim()===targetY)break;
-          //const popup = page.locator('div.ant-picker-panel:visible');
-          //await popup.waitFor({ state: 'visible' });
-          const nextButton= page.locator('div.ant-picker-date-panel:visible button.ant-picker-header-next-btn').first();
-          await nextButton.waitFor({state:'visible'});
-          await expect(nextButton).toBeEnabled();
-          await nextButton.click();
+     async function selectDMY(page: Page, popup: Locator, targetDateStr: string) {
+      const targetDate = new Date(targetDateStr);
+      const targetMonth = targetDate.toLocaleString('en-US', { month: 'long' });
+      const targetYear = targetDate.getFullYear().toString();
     
-          //4. wait pop up date picker visible
-          await expect(popup).toBeVisible();
-         //await popup.locator(`td[title="${targetDateStr}"] div.ant-picker-cell-inner`).click();
-
-          }
-          //const popup = page.locator('div.ant-picker-panel:visible');
-          console.log(`Selecting day: ${targetDateStr}`);
-          await popup.locator(`td[title="${targetDateStr}"] div.ant-picker-cell-inner`).click();
-
-       }
-
+      const maxLoop = 20;
+      let count = 0;
     
-    });    
+      while (count++ < maxLoop) {
+        const currentMonthLocator = popup.locator('button.ant-picker-month-btn');
+        const currentYearLocator = popup.locator('button.ant-picker-year-btn');
+    
+        const currentMonth = (await currentMonthLocator.textContent())?.trim();
+        const currentYear = (await currentYearLocator.textContent())?.trim();
+    
+        console.log(`Loop ${count} | Current: Month=${currentMonth} Year=${currentYear} | Target: Month=${targetMonth} Year=${targetYear}`);
+    
+        if (currentMonth === targetMonth && currentYear === targetYear) {
+          break;
+        }
+    
+        const nextButton = popup.locator('div.ant-picker-date-panel button.ant-picker-header-next-btn').first();
+        await expect(nextButton).toBeVisible();
+        await expect(nextButton).toBeEnabled();
+    
+        // Click và chờ header đổi
+        await nextButton.click();
+        await Promise.all([
+          currentMonthLocator.waitFor({ state: 'visible' }),
+          currentYearLocator.waitFor({ state: 'visible' }),
+          page.waitForTimeout(150), // giúp đảm bảo render hoàn tất
+        ]);
+      }
+    
+      if (count >= maxLoop) {
+        throw new Error(`Không tìm thấy tháng ${targetMonth} năm ${targetYear} sau ${maxLoop} lần lặp.`);
+      }
+    
+      console.log(`Selecting day: ${targetDateStr}`);
+      await popup.locator(`td[title="${targetDateStr}"] div.ant-picker-cell-inner`).click();
+    }
+    
+  });
 });

@@ -50,40 +50,40 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
     const stageCamPaign= [
         {
           name: 'self_assessment',
-          startDate: '2025-05-24',
-          expectStartDate: '05/24/2025',
+          startDate: '2025-05-28',
+          expectStartDate: '05/28/2025',
           endDate: '2025-06-01',
           expectEndDate: '06/01/2025',
         
         },
         {
           name: 'assessment',
-          startDate: '2025-05-25',
-          expectStartDate: '05/25/2025',
+          startDate: '2025-05-28',
+          expectStartDate: '05/28/2025',
           endDate: '2025-06-02',
           expectEndDate: '06/02/2025',
           
         },
         {
           name: 'first_review',
-          startDate: '2025-05-26',
-          expectStartDate: '05/26/2025',
+          startDate: '2025-05-29',
+          expectStartDate: '05/29/2025',
           endDate: '2025-06-03',
           expectEndDate: '06/03/2025',
          
         },
         {
           name: 'face_to_face_meeting',
-          startDate: '2025-05-27',
-          expectStartDate: '05/27/2025',
+          startDate: '2025-05-30',
+          expectStartDate: '05/30/2025',
           endDate: '2025-06-04',
           expectEndDate: '06/04/2025',
           
         },
         {
           name: 'second_review',
-          startDate: '2025-05-28',
-          expectStartDate: '05/28/2025',
+          startDate: '2025-05-31',
+          expectStartDate: '05/31/2025',
           endDate: '2025-06-05',
           expectEndDate: '06/05/2025',
          
@@ -91,16 +91,16 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
     
         {
           name: 'final_approval',
-          startDate: '2025-05-29',
-          expectStartDate: '05/29/2025',
+          startDate: '2025-05-31',
+          expectStartDate: '05/31/2025',
           endDate: '2025-06-06',
           expectEndDate: '06/06/2025',
          
         },
         {
           name: 'result_announcement',
-          startDate: '2025-05-30',
-          expectStartDate: '05/30/2025',
+          startDate: '2025-05-31',
+          expectStartDate: '05/31/2025',
           endDate: '2025-06-07',
           expectEndDate: '06/07/2025',
         
@@ -158,7 +158,7 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
      //2. wait pop up date picker visible
      //const startDatePopup = page.locator('div.ant-picker-panel').filter({has:inputStart});
      //await page.locator('div.ant-picker-panel:visible').waitFor({ state: 'visible' });
-    await selectDMY(popupStartDate,startDate)
+    await selectDMY(page,popupStartDate,startDate)
      //3. click next button to select date
      //await popup.locator('div.ant-picker-header > button.ant-picker-header-next-btn').click();
     
@@ -181,7 +181,7 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
     //const endDatePopup = page.locator('div.ant-picker-panel');
     //await popupEnd.waitFor({state:'visible'});
     
-    await selectDMY(popupEnd,endDate)
+    await selectDMY(page,popupEnd,endDate)
     //7. click next button to select date
     //await popupEnd.locator('div.ant-picker-header > button.ant-picker-header-next-btn').click();
     
@@ -200,41 +200,62 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
     
      }
 
-     async function selectDMY(popup: Locator, targetDateStr: string) {
-      const targetDate = new Date(targetDateStr);
-      const targetMonth = targetDate.getMonth();  // 0-based month
-      const targetYear = targetDate.getFullYear();
-    
-      let count = 0;
-      const maxLoops = 12;
-    
-      while (count++ < maxLoops) {
-        const currentMonthStr = (await popup.locator('button.ant-picker-month-btn').textContent())?.trim() || '';
-        const currentYearStr = (await popup.locator('button.ant-picker-year-btn').textContent())?.trim() || '';
-    
-        // Chuyển currentMonthStr sang số 0-based tháng
-        const currentMonth = new Date(`${currentMonthStr} 1, 2000`).getMonth();
-        const currentYear = parseInt(currentYearStr, 10);
-    
-        console.log(`Loop ${count} | Current: Month=${currentMonthStr} (${currentMonth}) Year=${currentYear} | Target: Month=${targetMonth} Year=${targetYear}`);
-    
-        // So sánh tháng, năm đã cùng dạng số
-        if (currentMonth === targetMonth && currentYear === targetYear) {
-          break;
-        }
-    
-        // Click nút next tháng
-        const nextButton = popup.locator('button.ant-picker-header-next-btn').first();
-        await nextButton.waitFor({ state: 'visible' });
-        await expect(nextButton).toBeEnabled();
-        await nextButton.click();
-    
-        // Đảm bảo popup vẫn hiển thị sau click
-        await expect(popup).toBeVisible();
-      }
-    
-      // Chọn ngày trong popup
-      await popup.locator(`td[title="${targetDateStr}"] div.ant-picker-cell-inner`).click();
+
+async function selectDMY(page: Page, popup: Locator, targetDateStr: string) {
+  const targetDate = new Date(targetDateStr);
+  const targetMonth = targetDate.getMonth(); // 0-based
+  const targetYear = targetDate.getFullYear();
+
+  const getCurrentMonthYear = async () => {
+    const currentMonthStr = (await popup.locator('button.ant-picker-month-btn').textContent())?.trim() || '';
+    const currentYearStr = (await popup.locator('button.ant-picker-year-btn').textContent())?.trim() || '';
+    const currentMonth = new Date(`${currentMonthStr} 1, 2000`).getMonth();
+    const currentYear = parseInt(currentYearStr, 10);
+    return { currentMonth, currentYear, currentMonthStr, currentYearStr };
+  };
+
+  let count = 0;
+  const maxLoops = 12;
+
+  while (count++ < maxLoops) {
+    const { currentMonth, currentYear, currentMonthStr } = await getCurrentMonthYear();
+
+    console.log(`Loop ${count} | Current: Month=${currentMonthStr} (${currentMonth}) Year=${currentYear} | Target: Month=${targetMonth} Year=${targetYear}`);
+
+    if (currentMonth === targetMonth && currentYear === targetYear) {
+      break;
     }
-  });
-});    
+
+    // Tính khoảng cách giữa target và current (theo tháng)
+    const currentTotalMonths = currentYear * 12 + currentMonth;
+    const targetTotalMonths = targetYear * 12 + targetMonth;
+    const diff = targetTotalMonths - currentTotalMonths;
+
+    const navButton = diff > 0
+      ? popup.locator('button.ant-picker-header-next-btn').first()
+      : popup.locator('button.ant-picker-header-prev-btn').first();
+
+    const monthBtn = popup.locator('button.ant-picker-month-btn');
+    const prevMonthText = await monthBtn.textContent();
+
+    await expect(navButton).toBeEnabled();
+
+    await navButton.click({force:true});
+    console.log(`➡️ Click ${diff > 0 ? 'next' : 'prev'} month button`);
+
+
+    // Chờ tháng thay đổi
+    await expect(monthBtn).not.toHaveText(prevMonthText || '', { timeout: 3000 });
+
+    await expect(popup).toBeVisible();
+  }
+
+  const { currentMonth, currentYear } = await getCurrentMonthYear();
+  if (currentMonth !== targetMonth || currentYear !== targetYear) {
+    throw new Error(`Không thể điều hướng tới tháng/năm: ${targetMonth + 1}/${targetYear} sau ${maxLoops} lần lặp.`);
+  }
+
+  await popup.locator(`td[title="${targetDateStr}"] div.ant-picker-cell-inner`).click();
+}
+ });
+});

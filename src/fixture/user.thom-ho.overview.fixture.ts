@@ -16,7 +16,7 @@ roleUserThom: async ({page},use) => {
 await page.goto('https://qa-nexthcm.banvien.com.vn/login',{timeout:60000});
 
 const loginpage = new LoginPage(page);
-await loginpage.fillInformation("thom.ho","BVC@12345678");
+await loginpage.fillInformation("thom.ho","12345678@X");
 await loginpage.Login();
 
 
