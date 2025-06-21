@@ -200,38 +200,46 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
     
      }
 
-     async function selectDMY(popup: Locator,targetDateStr: string) 
-     
-    {
-        const targetDate = new Date(targetDateStr);
-        const targetM= targetDate.toLocaleString('en-US',{month:'long'})
-        const targetY= targetDate.getFullYear().toString();
-        let count = 0;
-        const loopMonth = 12;
-        while(count++<loopMonth) {
+    async function selectDMY(popup: Locator, targetDateStr: string) {
+  const targetDate = new Date(targetDateStr);
+  const targetM = targetDate.toLocaleString('en-US', { month: 'long' });
+  const targetY = targetDate.getFullYear().toString();
 
-          const currentM = await popup.locator('button.ant-picker-month-btn').textContent();
-          const currentY = await popup.locator('button.ant-picker-year-btn').textContent();
-          console.log(`Loop ${count} | Current: Month=${currentM?.trim()} Year=${currentY?.trim()} | Target: Month=${targetM} Year=${targetY}`);
-          if (currentM?.trim()===targetM&&currentY?.trim()===targetY)break;
-          //const popup = page.locator('div.ant-picker-panel:visible');
-          //await popup.waitFor({ state: 'visible' });
-          const nextButton= page.locator('div.ant-picker-date-panel:visible button.ant-picker-header-next-btn').first();
-          await nextButton.waitFor({state:'visible'});
-          await expect(nextButton).toBeEnabled();
-          await nextButton.click();
-    
-          //4. wait pop up date picker visible
-          await expect(popup).toBeVisible();
-         //await popup.locator(`td[title="${targetDateStr}"] div.ant-picker-cell-inner`).click();
+  let count = 0;
+  const loopMonth = 12;
 
-          }
-          //const popup = page.locator('div.ant-picker-panel:visible');
-          console.log(`Selecting day: ${targetDateStr}`);
-          await popup.locator(`td[title="${targetDateStr}"] div.ant-picker-cell-inner`).click();
+  while (count++ < loopMonth) {
+    const currentM = await popup.locator('button.ant-picker-month-btn').textContent();
+    const currentY = await popup.locator('button.ant-picker-year-btn').textContent();
 
-       }
+    console.log(`Loop ${count} | Current: Month=${currentM?.trim()} Year=${currentY?.trim()} | Target: Month=${targetM} Year=${targetY}`);
 
-    
-    });    
+    if (currentM?.trim() === targetM && currentY?.trim() === targetY) break;
+
+    const nextButton = popup.locator('button.ant-picker-header-next-btn');
+    await nextButton.waitFor({ state: 'visible' });
+    await expect(nextButton).toBeEnabled();
+
+    // Lưu lại giá trị cũ trước khi click
+    const prevMonth = currentM?.trim();
+    const prevYear = currentY?.trim();
+
+    await nextButton.click();
+
+    // Chờ cho đến khi tháng hoặc năm thay đổi
+    await popup.waitForFunction(
+      ([prevMonth, prevYear]) => {
+        const newMonth = document.querySelector('button.ant-picker-month-btn')?.textContent?.trim();
+        const newYear = document.querySelector('button.ant-picker-year-btn')?.textContent?.trim();
+        return newMonth !== prevMonth || newYear !== prevYear;
+      },
+      [prevMonth, prevYear],
+      { timeout: 3000 }
+    );
+  }
+
+  console.log(`Selecting day: ${targetDateStr}`);
+  await popup.locator(`td[title="${targetDateStr}"] div.ant-picker-cell-inner`).click();
+}
+ });
 });
