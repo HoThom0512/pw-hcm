@@ -20,7 +20,8 @@ test('step 1 login on HCM system', async({overviewpage,page}) =>{
 
   await expect(page).toHaveURL('https://qa-nexthcm.banvien.com.vn/admin/request-management/resignation-request');
 
- //filter status handover
+ 
+  //filter status handover
 
  const [responseGet] = await Promise.all([
   // Chờ API gọi đúng status=handover
@@ -48,8 +49,10 @@ console.log('API trả về:', convertRespGet);
 const apiCount = convertRespGet.data.items.length;
 
 // Lọc đúng các dòng có <td> (tức là dòng dữ liệu thật)
+const handoverCell = page.locator('td.ant-table-cell', { hasText: /^Handover$/ });
+
 const rowLocator = page.locator('table tbody tr').filter({
-  has: page.locator('td')
+  has:handoverCell
 });
 await expect(rowLocator).toHaveCount(expectedRowCount);
   })
